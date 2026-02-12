@@ -60,28 +60,172 @@ body::before {
   }
 }
 
-.candle-count-display {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  margin-top: 150px;
-  margin-bottom: 20px;
-  font-family: 'Arial', sans-serif;
-  font-size: 20px;
-  color: #6A4B18;
-  background-color: #F0E4D0;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  border: 2px solid #553C13;
+/* ========== Hints ========== */
+.hint {
+  position: fixed;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(26, 34, 52, 0.92);
+  color: #f0e4d0;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(240, 228, 208, 0.3);
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  pointer-events: none;
 }
 
-.candle-count-display span {
-  font-weight: bold;
-  color: #AD030F;
+.hint--hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hint-text {
+  white-space: nowrap;
+}
+
+/* Pointer: blinking click cursor above cake */
+.hint-pointer {
+  width: 28px;
+  height: 28px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f0e4d0'%3E%3Cpath d='M4 2v14l5-4 3 8 2-1-3-7 6-1V2z'/%3E%3C/svg%3E") no-repeat center;
+  background-size: contain;
+  animation: hint-blink 1.2s ease-in-out infinite;
+}
+
+.hint-pointer--grab {
+  width: 28px;
+  height: 28px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f0e4d0'%3E%3Cpath d='M7 5a2 2 0 012 2v2h6V7a2 2 0 012-2 2 2 0 012 2v9a2 2 0 01-2 2h-3a2 2 0 01-2-2v-2H9v2a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2v2h6V7a2 2 0 012-2z'/%3E%3C/svg%3E") no-repeat center;
+  background-size: contain;
+  animation: hint-blink 1.2s ease-in-out infinite;
+}
+
+@keyframes hint-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.95); }
+}
+
+.cake-highlight {
+  position: absolute;
+  top: 130px;
+  width: 240px;
+  height: 85px;
+  border: 3px dashed rgba(255, 220, 150, 0.9);
+  border-radius: 50% 50% 45% 45%;
+  background: rgba(255, 220, 150, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 200, 100, 0.15);
+  animation: cake-highlight-pulse 2s ease-in-out infinite;
+  animation: hint-blink 1.2s ease-in-out infinite;
+}
+
+/* Hint 1: above cake */
+.hint--cake {
+  left: 50%;
+  top: calc(50% - 200px);
+  transform: translateX(-50%);
+}
+
+/* Hint 2: blow – below cake area */
+.hint--blow {
+  left: 50%;
+  top: calc(50% + 120px);
+  transform: translateX(-50%);
+}
+
+/* Hint 3 & 4: envelope phase – center (envelope-stage is visible) */
+.hint--envelope,
+.hint--card {
+  left: 50%;
+  top: calc(50% + 140px);
+  transform: translateX(-50%);
+  z-index: 15;
+}
+
+/* Hide cake after celebration (envelope entrance) */
+.cake.hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: visibility 0.6s ease, opacity 0.6s ease;
+}
+
+/* Envelope stage: full-screen overlay, shown after confetti */
+.envelope-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.5s ease, opacity 0.5s ease;
+  pointer-events: none;
+}
+
+/* When hidden, envelope and all children must not capture clicks or cursor (card has grab) */
+.envelope-stage:not(.visible),
+.envelope-stage:not(.visible) * {
+  pointer-events: none !important;
+}
+
+.envelope-stage.visible {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.envelope-stage.visible * {
+  pointer-events: auto;
+}
+
+/* After envelope is open, only the card is interactable so it's easy to grab */
+.envelope-stage.visible .container.opened * {
+  pointer-events: none !important;
+}
+.envelope-stage.visible .container.opened .card {
+  pointer-events: auto !important;
+}
+
+/* Run envelope entrance only when stage is visible */
+.envelope-stage .valentines {
+  animation: none;
+}
+
+.envelope-stage.visible .valentines {
+  animation: envelope-entrance 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+    envelope-float 3s ease-in-out infinite 1.5s;
+}
+
+@keyframes envelope-entrance {
+  0% {
+    transform: translateY(120vh) scale(0.7);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-20px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes envelope-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
 }
 
 .cake {
@@ -93,6 +237,7 @@ body::before {
   left: 50%;
   margin-top: -70px;
   margin-left: -125px;
+  cursor: default;
   filter: brightness(var(--cake-brightness)) drop-shadow(0 0 var(--cake-glow-spread) rgba(255, 160, 60, 0.4));
   transition: filter 0.3s ease;
 }

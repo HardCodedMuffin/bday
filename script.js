@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
   const cake = document.querySelector(".cake");
-  const candleCountDisplay = document.getElementById("candleCount");
   let candles = [];
   let audioContext;
   let analyser;
@@ -11,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const activeCandles = candles.filter(
       (candle) => !candle.classList.contains("out")
     ).length;
-    candleCountDisplay.textContent = activeCandles;
 
     // Dynamic lighting: radius = 200px + (candleCount * 50px), scaled by viewport so edge stays soft on large screens
     const baseRadius = 200 + activeCandles * 50;
@@ -49,6 +47,13 @@ document.addEventListener("DOMContentLoaded", function () {
     cake.appendChild(candle);
     candles.push(candle);
     updateCandleCount();
+    // After first candle, show blow hint
+    if (candles.length === 1) {
+      var hintAdd = document.getElementById("hint-add-candles");
+      var hintBlow = document.getElementById("hint-blow");
+      if (hintAdd) hintAdd.classList.add("hint--hidden");
+      if (hintBlow) hintBlow.classList.remove("hint--hidden");
+    }
   }
 
   cake.addEventListener("click", function (event) {
@@ -123,23 +128,26 @@ document.addEventListener("DOMContentLoaded", function () {
               ],
             })
           : "circle";
+
+      var vBlastBase = {
+        particleCount: 180,
+        spread: 95,
+        startVelocity: 60,
+        ticks: 260,
+        decay: 0.92,
+        scalar: 1.35,
+        shapes: [heartShape],
+        colors: vBlastColors,
+      };
       confetti({
-        particleCount: 100,
-        spread: 70,
-        startVelocity: 52,
+        ...vBlastBase,
         origin: { x: 0, y: 1 },
         angle: 60,
-        shapes: [heartShape],
-        colors: vBlastColors,
       });
       confetti({
-        particleCount: 100,
-        spread: 70,
-        startVelocity: 52,
+        ...vBlastBase,
         origin: { x: 1, y: 1 },
         angle: 120,
-        shapes: [heartShape],
-        colors: vBlastColors,
       });
     }
 
@@ -147,6 +155,23 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(function () {
       startConstantRain(darkPalette);
     }, 2000);
+
+    // --- 3. After confetti explodes: hide cake, show envelope entrance ---
+    setTimeout(function () {
+      var cakeEl = document.querySelector(".cake");
+      var envelopeStage = document.getElementById("envelope-stage");
+      var hintAdd = document.getElementById("hint-add-candles");
+      var hintBlow = document.getElementById("hint-blow");
+      var hintEnvelope = document.getElementById("hint-click-envelope");
+      if (cakeEl) cakeEl.classList.add("hidden");
+      if (hintAdd) hintAdd.classList.add("hint--hidden");
+      if (hintBlow) hintBlow.classList.add("hint--hidden");
+      if (hintEnvelope) hintEnvelope.classList.remove("hint--hidden");
+      if (envelopeStage) {
+        envelopeStage.classList.add("visible");
+        envelopeStage.setAttribute("aria-hidden", "false");
+      }
+    }, 2200);
   }
 
   function startConstantRain(colors) {
