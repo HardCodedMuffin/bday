@@ -8,7 +8,76 @@ document.addEventListener("DOMContentLoaded", () => {
     let isExpanded = false;
     let isRead = false;
 
-    // Open envelope on first click only
+    // --- Helper to get coordinates from either Mouse or Touch ---
+    const getPos = (e) => {
+        return {
+            x: e.touches ? e.touches[0].clientX : e.clientX,
+            y: e.touches ? e.touches[0].clientY : e.clientY
+        };
+    };
+
+    // --- START DRAGGING ---
+    const onStart = (e) => {
+        if (isExpanded) return;
+        isDragging = true;
+        card.style.transition = "none";
+        
+        const pos = getPos(e);
+        startX = pos.x - currentX;
+        startY = pos.y - currentY;
+        
+        card.style.cursor = "grabbing";
+        const hintPull = document.getElementById("hint-pull-card");
+        if (hintPull) hintPull.classList.add("hint--hidden");
+    };
+
+    // --- DRAGGING MOVE ---
+    const onMove = (e) => {
+        if (!isDragging) return;
+        
+        // Prevent mobile from scrolling while dragging the card
+        if (e.cancelable) e.preventDefault(); 
+
+        const pos = getPos(e);
+        currentY = pos.y - startY;
+        currentY = Math.min(currentY, 0); // Only allow upward movement
+        currentX = 0;
+        
+        card.style.transform = `translate(${currentX}px, ${currentY}px) scale(0.92)`;
+    };
+
+    // --- END DRAGGING ---
+    const onEnd = () => {
+        if (isDragging) {
+            isDragging = false;
+            card.style.cursor = "grab";
+            
+            // Logic for snapping back or expanding
+            if (!isExpanded && isRead && Math.abs(currentY) < 20) { 
+                resetEnvelope();
+            } 
+            else if (Math.abs(currentY) > 50) {
+                setTimeout(() => { expandCard(); }, 100);
+            } 
+            else if (!isExpanded && !isRead) {
+                card.style.transition = "transform 0.3s ease";
+                currentY = -40; 
+                card.style.transform = `translate(${currentX}px, ${currentY}px) scale(0.92)`;
+            }
+        }
+    };
+
+    // Mouse Listeners
+    card.addEventListener("mousedown", onStart);
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onEnd);
+
+    // Touch Listeners (Mobile)
+    card.addEventListener("touchstart", onStart, { passive: false });
+    document.addEventListener("touchmove", onMove, { passive: false });
+    document.addEventListener("touchend", onEnd);
+
+    // Open envelope on first click/tap
     container.addEventListener("click", (e) => {
         if (!container.classList.contains("opened") && e.target !== card && !card.contains(e.target)) {
             container.classList.add("opened");
@@ -18,9 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (hintPull)
                 setTimeout(() => {
                     hintPull.classList.remove("hint--hidden");
-                }, 3000);
+                }, 2000);
         }
-    }, { once: false });
+    });
 
     // Make card draggable
     card.addEventListener("mousedown", (e) => {
@@ -116,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // We set these to empty strings so the browser uses the values in the CSS file
         card.style.top = "";
         card.style.left = "";
-        card.style.transition = ""; // Let the CSS handle the 0s delay slide-down
+        card.style.transition = "all 0.8s ease-in-out";
         
         // Reset transform to the starting point
         card.style.transform = "translate(0, 0) scale(0.92)";
