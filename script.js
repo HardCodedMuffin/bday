@@ -49,10 +49,15 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCandleCount();
     // After first candle, show blow hint
     if (candles.length === 1) {
-      var hintAdd = document.getElementById("hint-add-candles");
-      var hintBlow = document.getElementById("hint-blow");
-      if (hintAdd) hintAdd.classList.add("hint--hidden");
-      if (hintBlow) hintBlow.classList.remove("hint--hidden");
+      document.getElementById("hint-add-candles").classList.add("hint--hidden");
+      
+      setTimeout(() => {
+        // Only show blow hint if candles are still lit
+        const anyLit = candles.some(c => !c.classList.contains("out"));
+        if (anyLit && !celebrationTriggered) {
+          document.getElementById("hint-blow").classList.remove("hint--hidden");
+        }
+      }, 1500);
     }
   }
 
@@ -82,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (isBlowing()) {
       candles.forEach((candle) => {
+        document.getElementById("hint-blow").classList.add("hint--hidden");
         if (!candle.classList.contains("out") && Math.random() > 0.5) {
           candle.classList.add("out");
           blownOut++;
@@ -154,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- 2. Constant Rain: start after initial blast peaks (~2s) ---
     setTimeout(function () {
       startConstantRain(darkPalette);
-    }, 2000);
+    }, 1500);
 
     // --- 3. After confetti explodes: hide cake, show envelope entrance ---
     setTimeout(function () {
@@ -172,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
         envelopeStage.setAttribute("aria-hidden", "false");
       }
     }, 2200);
+
   }
 
   function startConstantRain(colors) {

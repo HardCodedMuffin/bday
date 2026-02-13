@@ -2,11 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.querySelector(".container");
     const card = document.querySelector(".card");
     let isDragging = false;
-    let startX = 0;
     let startY = 0;
     let currentX = 0;
     let currentY = 0;
     let isExpanded = false;
+    let isRead = false;
 
     // Open envelope on first click only
     container.addEventListener("click", (e) => {
@@ -15,7 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
             var hintEnvelope = document.getElementById("hint-click-envelope");
             var hintPull = document.getElementById("hint-pull-card");
             if (hintEnvelope) hintEnvelope.classList.add("hint--hidden");
-            if (hintPull) hintPull.classList.remove("hint--hidden");
+            if (hintPull)
+                setTimeout(() => {
+                    hintPull.classList.remove("hint--hidden");
+                }, 3000);
         }
     }, { once: false });
 
@@ -23,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     card.addEventListener("mousedown", (e) => {
         if (isExpanded) return; // Don't allow dragging when expanded
         isDragging = true;
+        card.style.transition = "none";
         startX = e.clientX - currentX;
         startY = e.clientY - currentY;
         card.style.cursor = "grabbing";
@@ -46,15 +50,19 @@ document.addEventListener("DOMContentLoaded", () => {
             isDragging = false;
             card.style.cursor = "grab";
             
-            // Check if card is dragged back to original position (inside envelope)
-            if (Math.abs(currentY) < 20) {
-                // Close the envelope and reset everything
+            if (!isExpanded && isRead && Math.abs(currentY) < 20) { 
                 resetEnvelope();
-            } else if (Math.abs(currentY) > 50) {
-                // Auto-expand when card is dragged far enough out
+            } 
+            else if (Math.abs(currentY) > 50) {
                 setTimeout(() => {
                     expandCard();
                 }, 300);
+            } 
+            else if (!isExpanded && !isRead) {
+                // FORCE TRANSITION HERE TOO
+                card.style.transition = "transform 0.3s ease";
+                currentY = -40; 
+                card.style.transform = `translate(${currentX}px, ${currentY}px)`;
             }
         }
     });
@@ -63,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     card.style.cursor = "grab";
 
     function expandCard() {
+        isRead = true;
         isExpanded = true;
         container.classList.add("card-expanded");
         card.style.left = "";
@@ -96,10 +105,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function resetEnvelope() {
+        isRead = false;
+        isExpanded = false;
+    
+        // 1. Remove the classes
         container.classList.remove("opened");
-        currentX = 0;
-        currentY = 0;
-        card.style.transform = `translate(${currentX}px, ${currentY}px) scale(1)`;
-        card.style.cursor = "grab";
+        container.classList.remove("card-expanded");
+    
+        // 2. Clear manual dragging styles
+        // We set these to empty strings so the browser uses the values in the CSS file
+        card.style.top = "";
+        card.style.left = "";
+        card.style.transition = ""; // Let the CSS handle the 0s delay slide-down
+        
+        // Reset transform to the starting point
+        card.style.transform = "translate(0, 0) scale(0.92)";
+    
+        // Show the hint again
+        setTimeout(() => {
+            const hintEnvelope = document.getElementById("hint-click-envelope");
+            if (hintEnvelope) hintEnvelope.classList.remove("hint--hidden");
+        }, 1000);
     }
 });
