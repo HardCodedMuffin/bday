@@ -14,6 +14,14 @@ body {
   margin: 0;
 }
 
+/* tsParticles layer: behind content, non-interactive */
+.tsparticles-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* Radial gradient "room light" centered at the cake */
 body::before {
   content: "";
@@ -52,28 +60,166 @@ body::before {
   }
 }
 
-.candle-count-display {
-  position: relative;
-  z-index: 1;
+/* ========== Hints ========== */
+.hint {
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  bottom: 80px; /* Locked to the bottom area */
+  display: flex;
+  /* Moved up from the bottom for better visibility */
+  bottom: 15%; 
+  transform: translateX(-50%) translateY(0);
+
+  /* Text-only styling */
   text-align: center;
-  margin-top: 150px;
-  margin-bottom: 20px;
-  font-family: 'Arial', sans-serif;
-  font-size: 20px;
-  color: #6A4B18;
-  background-color: #F0E4D0;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  border: 2px solid #553C13;
+  background: transparent; /* No box, just pure text */
+  box-shadow: none;
+  border: none;
+
+  flex-direction: column;
+  align-items: center;
+
+  /* Typography */
+  color: #faedcd; /* Champagne Gold */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 2px 5px rgba(0,0,0,0.8);
+  font-family: 'Dancing Script', cursive; /* Using your fancy font */
+  font-size: 32px; /* Bigger and more readable */
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.9);
+  
+  /* Transition Logic */
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1.5s ease, transform 1.5s ease, visibility 1.5s;
+  pointer-events: none;
 }
 
-.candle-count-display span {
-  font-weight: bold;
-  color: #AD030F;
+.hint--hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none;
+}
+
+.hint-text {
+  white-space: nowrap;
+}
+
+@keyframes hint-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.95); }
+}
+
+.cake-highlight {
+  position: absolute;
+  top: 130px;
+  width: 240px;
+  height: 85px;
+  border: 3px dashed rgba(255, 220, 150, 0.9);
+  border-radius: 50% 50% 45% 45%;
+  background: rgba(255, 220, 150, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 200, 100, 0.15);
+  animation: cake-highlight-pulse 2s ease-in-out infinite;
+  animation: hint-blink 1.2s ease-in-out infinite;
+}
+
+/* Hint 1: above cake */
+.hint--cake {
+  left: 50%;
+  top: calc(50% - 200px);
+  transform: translateX(-50%);
+}
+
+/* Hint 2: blow – below cake area */
+.hint--blow {
+  transform: translateX(-50%);
+}
+
+/* Hint 3 & 4: envelope phase – center (envelope-stage is visible) */
+.hint--envelope,
+.hint--card {
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+}
+
+/* Hide cake after celebration (envelope entrance) */
+.cake.hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: visibility 0.6s ease, opacity 0.6s ease;
+}
+
+/* Envelope stage: full-screen overlay, shown after confetti */
+.envelope-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.5s ease, opacity 0.5s ease;
+  pointer-events: none;
+}
+
+/* When hidden, envelope and all children must not capture clicks or cursor (card has grab) */
+.envelope-stage:not(.visible),
+.envelope-stage:not(.visible) * {
+  pointer-events: none !important;
+}
+
+.envelope-stage.visible {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.envelope-stage.visible * {
+  pointer-events: auto;
+}
+
+/* After envelope is open, only the card is interactable so it's easy to grab */
+.envelope-stage.visible .container.opened * {
+  pointer-events: none !important;
+}
+.envelope-stage.visible .container.opened .card {
+  pointer-events: auto !important;
+}
+
+/* Run envelope entrance only when stage is visible */
+.envelope-stage .valentines {
+  animation: none;
+}
+
+.envelope-stage.visible .valentines {
+  animation: envelope-entrance 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+    envelope-float 3s ease-in-out infinite 1.5s;
+}
+
+@keyframes envelope-entrance {
+  0% {
+    transform: translateY(120vh) scale(0.7);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-20px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes envelope-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
 }
 
 .cake {
@@ -85,6 +231,7 @@ body::before {
   left: 50%;
   margin-top: -70px;
   margin-left: -125px;
+  cursor: default;
   filter: brightness(var(--cake-brightness)) drop-shadow(0 0 var(--cake-glow-spread) rgba(255, 160, 60, 0.4));
   transition: filter 0.3s ease;
 }
