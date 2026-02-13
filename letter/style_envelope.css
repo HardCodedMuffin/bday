@@ -190,8 +190,8 @@ body {
 
   .letter-address {
     align-self: flex-start; /* Address on the left */
-    margin-bottom: 20px;
-    font-size: 1.1rem;
+    margin-bottom: 15px;
+    font-size: 1rem;
     font-weight: bold;
   }
 
@@ -202,13 +202,13 @@ body {
     font-size: 0.8rem;
     /* Adds that "handwritten" margin feel */
     padding: 0 5px; 
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     /* Helps Turkish words break nicely if they are too long */
     hyphens: auto;
   }
 
   .letter-footer {
-    font-size: 1.1rem;
+    font-size: 1rem;
     align-self: flex-start;
     margin-top: auto; /* Pushes signature to the bottom */
   }
@@ -218,7 +218,7 @@ body {
     align-items: center;  /* Vertical center */
     justify-content: center; /* Horizontal center */
     height: 100%;
-    font-size: 8px;
+    font-size: 18px;
     text-align: center;
     opacity: 1;
     visibility: visible;
@@ -238,10 +238,10 @@ body {
   /* Reset clipping when the card is expanded */
   .card.expanded .text {
     -webkit-line-clamp: 15; /* Set to a high number instead of 'initial' */
-    font-size: clamp(8px, 5vw, 10px);
+    font-size: clamp(6px, 5vw, 8px);
     line-height: 1.5;
     /* Add more padding for the larger view */
-    inset: 60px 30px;
+    inset: 50px 25px;
   }
   
   .hearts {
