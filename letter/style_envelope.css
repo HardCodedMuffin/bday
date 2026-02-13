@@ -141,7 +141,7 @@ body {
   }
 
   .card.expanded .text {
-    font-size: clamp(24px, 5vw, 48px);
+    font-size: clamp(8px, 5vw, 12px);
     line-height: 1.5;
   }
 
@@ -191,7 +191,7 @@ body {
   .letter-address {
     align-self: flex-start; /* Address on the left */
     margin-bottom: 20px;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     font-weight: bold;
   }
 
@@ -199,7 +199,7 @@ body {
     text-align: justify; /* Justified context */
     line-height: 1.6;
     margin-bottom: 30px;
-    font-size: 1.1rem;
+    font-size: 0.8rem;
     /* Adds that "handwritten" margin feel */
     padding: 0 5px; 
     margin-bottom: 20px;
@@ -208,7 +208,7 @@ body {
   }
 
   .letter-footer {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     align-self: flex-start;
     margin-top: auto; /* Pushes signature to the bottom */
   }
@@ -218,7 +218,7 @@ body {
     align-items: center;  /* Vertical center */
     justify-content: center; /* Horizontal center */
     height: 100%;
-    font-size: 24px;
+    font-size: 8px;
     text-align: center;
     opacity: 1;
     visibility: visible;
@@ -238,7 +238,7 @@ body {
   /* Reset clipping when the card is expanded */
   .card.expanded .text {
     -webkit-line-clamp: 15; /* Set to a high number instead of 'initial' */
-    font-size: clamp(18px, 5vw, 20px);
+    font-size: clamp(8px, 5vw, 10px);
     line-height: 1.5;
     /* Add more padding for the larger view */
     inset: 60px 30px;
