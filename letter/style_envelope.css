@@ -219,7 +219,7 @@ body {
     font-size: 0.8rem;
     /* Adds that "handwritten" margin feel */
     padding: 0 5px; 
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     /* Helps Turkish words break nicely if they are too long */
     hyphens: auto;
   }
