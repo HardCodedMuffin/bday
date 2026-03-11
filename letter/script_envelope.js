@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function expandCard() {
         isRead = true;
         isExpanded = true;
+        document.body.style.overflow = "hidden";
         container.classList.add("card-expanded");
         card.style.left = "";
         card.style.top = "";
@@ -156,6 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
         isExpanded = false;
         currentX = 0;
         currentY = -200;
+        document.body.style.overflow = "";
         card.classList.remove("expanded");
         container.classList.remove("card-expanded");
         card.style.left = "15px";
@@ -176,6 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function resetEnvelope() {
         isRead = false;
         isExpanded = false;
+        document.body.style.overflow = "";
     
         // 1. Remove the classes
         container.classList.remove("opened");
