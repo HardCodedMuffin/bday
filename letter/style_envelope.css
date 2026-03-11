@@ -150,10 +150,10 @@ body {
   }
 
   .card.expanded:before {
-    width: calc(100% - 40px);
-    height: calc(100% - 40px);
-    left: 20px;
-    top: 20px;
+    width: calc(100% - 28px);
+    height: calc(100% - 28px);
+    left: 14px;
+    top: 14px;
   }
 
   .card.expanded .text {
@@ -171,12 +171,12 @@ body {
     content: "";
     position: absolute;
     /* This creates the rectangle line */
-    border: 1.5px solid #d4a373;
+    border: 1px solid #d4a373;
     /* Responsive size: Card size minus the margin */
-    width: calc(100% - 24px); 
-    height: calc(100% - 24px);
-    left: 12px;
-    top: 12px;
+    width: calc(100% - 18px); 
+    height: calc(100% - 18px);
+    left: 9px;
+    top: 9px;
     box-sizing: border-box;
     z-index: 1; /* Keeps it behind the heart and text */
     transition: all 0.8s ease;
@@ -201,27 +201,25 @@ body {
     display: flex;
     flex-direction: column;
     text-align: left; /* Default alignment for the letter */
-    /* Slightly tighter padding so more text fits without scrolling */
-    padding: 10px 20px;
+    padding: 10px 16px;
     box-sizing: border-box;
   }
 
   .letter-address {
     align-self: flex-start; /* Address on the left */
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     font-size: 1rem;
     font-weight: bold;
   }
 
   .letter-content {
     text-align: justify; /* Justified context */
-    /* Slightly more open lines for a cleaner "paper" feel */
-    line-height: 1.75;
+    line-height: 1.6;
     margin-bottom: 30px;
     font-size: 0.8rem;
     /* Adds that "handwritten" margin feel */
     padding: 0 5px; 
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     /* Helps Turkish words break nicely if they are too long */
     hyphens: auto;
   }
@@ -272,7 +270,7 @@ body {
     font-size: clamp(6px, 5vw, 8px);
     line-height: 1.5;
     /* Add more padding for the larger view */
-    inset: 38px 25px;
+    inset: 28px 20px;
   }
   
   .hearts {
