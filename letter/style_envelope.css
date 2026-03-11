@@ -110,7 +110,7 @@ body {
 
   .card {
     position: absolute;
-    background-color: #fffcf2;
+    background-color: #fff7ef; /* cozy paper */
     width: 270px;
     height: 170px;
     top: 5px; /* Default position inside envelope */
@@ -132,7 +132,7 @@ body {
 
   .card.expanded {
     position: fixed;
-    background-color: #fffcf2; /* Warm Parchment */
+    background-color: #fff7ef; /* cozy paper */
     left: 50% !important;
     top: 50% !important;
     transform: translate(-50%, -50%) scale(1);
@@ -143,7 +143,7 @@ body {
     box-shadow: 
     0 0 80px rgba(255, 255, 255, 0.15), 
     0 20px 60px rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(212, 163, 115, 0.2);
+    border: 1px solid rgba(243, 200, 106, 0.22);
     pointer-events: auto;
     z-index: 1000;
     overflow: hidden;
@@ -171,7 +171,7 @@ body {
     content: "";
     position: absolute;
     /* This creates the rectangle line */
-    border: 1px solid #d4a373;
+    border: 1px solid rgba(180, 106, 125, 0.55); /* warm rose ink */
     /* Responsive size: Card size minus the margin */
     width: calc(100% - 18px); 
     height: calc(100% - 18px);
@@ -189,13 +189,13 @@ body {
     font-family: "Dancing Script", cursive;
     text-align: center;
     line-height: 1.3;
-    color: #003049;
+    color: #3b2f2a; /* warm cocoa */
     transition: opacity 0.5s ease, transform 0.8s ease;
   }
 
   .full-text {
     font-family: 'Dancing Script', cursive;
-    color: #432818;
+    color: #3b2f2a;
     opacity: 0;
     visibility: hidden;
     display: flex;
@@ -273,10 +273,12 @@ body {
   
   .hearts {
     position: absolute;
+    left: 6px; /* shift left so hearts stay within card/envelope */
+    top: 0;
   }
   
   .hearts > * {
-    background-color: red;
+    background-color: #f2a7b8; /* default; overridden per heart */
     display: inline-block;
     height: 10px;
     margin: 0 10px;
@@ -289,7 +291,7 @@ body {
   .hearts > *:before,
   .hearts > *:after {
     content: "";
-    background-color: red;
+    background-color: inherit; /* keep heart lobes same color */
     border-radius: 50%;
     height: 10px;
     position: absolute;
@@ -307,27 +309,32 @@ body {
   }
   
   .one {
-    left: 10px;
+    left: 0px;
+    background-color: #f2a7b8; /* blush */
     animation: none;
   }
   
   .two {
-    left: 30px;
+    left: 18px;
+    background-color: #ffb48f; /* peach */
     animation: none;
   }
   
   .three {
-    left: 50px;
+    left: 36px;
+    background-color: #f3c86a; /* honey */
     animation: none;
   }
   
   .four {
-    left: 70px;
+    left: 54px;
+    background-color: #a8d5ba; /* sage */
     animation: none;
   }
   
   .five {
-    left: 90px;
+    left: 72px;
+    background-color: #c9b7ff; /* lavender */
     animation: none;
   }
 

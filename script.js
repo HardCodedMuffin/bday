@@ -126,15 +126,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function runCelebration() {
+    // Cozy / warm palette (keeps background + envelope untouched; only particles change)
     var darkPalette = [
-      "#FFD700",
-      "#FFA500",
-      "#C0C0C0",
-      "#E8E8E8",
-      "#FFEC8B",
-      "#DAA520",
+      "#F3C86A", // honey
+      "#FFB48F", // peach
+      "#F2A7B8", // blush
+      "#A8D5BA", // sage
+      "#C9B7FF", // lavender
+      "#FFF7EF", // warm milk
     ];
-    var vBlastColors = ["#FFC0CB", "#FF69B4", "#FF1493", "#C71585"];
+    var vBlastColors = ["#F2A7B8", "#FFB48F", "#F3C86A", "#C9B7FF"];
 
     function isIphone13SizedOrSmaller() {
       // iPhone 13 CSS viewport (portrait) is 390x844. We use short/long side
@@ -255,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
             x: Math.random(),
             y: Math.random() * skew - 0.2,
           },
-          colors: colors.length ? colors : ["#FFFFFF", "#FFD700", "#C0C0C0"],
+          colors: colors.length ? colors : ["#FFF7EF", "#F3C86A", "#F2A7B8"],
           shapes: ["circle"],
           gravity: randomInRange(0.4, 0.6),
           scalar: randomInRange(0.4, 1),
@@ -282,7 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
           fullScreen: { enable: true, zIndex: 0 },
           particles: {
           color: {
-            value: ["#FFFFFF", "#FFD700", "#FFA500", "#C0C0C0", "#E8E8E8"],
+            value: ["#FFF7EF", "#F3C86A", "#FFB48F", "#F2A7B8", "#A8D5BA", "#C9B7FF"],
           },
           move: {
             direction: "bottom",
