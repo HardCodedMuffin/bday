@@ -1,18 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
+  function setAppVh() {
+    // Mobile "fullscreen"/address-bar changes make 100vh unstable; lock to innerHeight.
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }
+
+  setAppVh();
+  window.addEventListener("resize", setAppVh);
+  window.addEventListener("orientationchange", setAppVh);
+
   const cake = document.querySelector(".cake");
   let candles = [];
   let audioContext;
   let analyser;
   let microphone;
   let celebrationTriggered = false;
+  const MAX_LIGHT_CANDLES = 4; // cap lighting so scene doesn't keep brightening
 
   function updateCandleCount() {
     const activeCandles = candles.filter(
       (candle) => !candle.classList.contains("out")
     ).length;
+    const effectiveCandles = Math.min(activeCandles, MAX_LIGHT_CANDLES);
 
     // Dynamic lighting: radius = 200px + (candleCount * 50px), scaled by viewport so edge stays soft on large screens
-    const baseRadius = 200 + activeCandles * 50;
+    const baseRadius = 200 + effectiveCandles * 50;
     const viewportScale = Math.min(window.innerWidth, window.innerHeight) * 0.4;
     const glowRadiusPx = baseRadius + viewportScale;
     const root = document.documentElement;
@@ -21,16 +33,22 @@ document.addEventListener("DOMContentLoaded", function () {
       root.style.setProperty("--glow-radius", "0px");
       root.style.setProperty("--glow-opacity", "0");
       root.style.setProperty("--glow-center-opacity", "0");
-      root.style.setProperty("--cake-brightness", "0.55");
+      root.style.setProperty("--cake-brightness", "0.60");
       root.style.setProperty("--cake-glow-spread", "0px");
     } else {
       root.style.setProperty("--glow-radius", glowRadiusPx + "px");
       // Warm glow intensity scales with candles (cap for many candles), slightly brighter overall
-      const intensity = Math.min(0.58 + activeCandles * 0.07, 0.96);
+      const intensity = Math.min(0.58 + effectiveCandles * 0.07, 0.96);
       root.style.setProperty("--glow-opacity", String(intensity));
-      root.style.setProperty("--glow-center-opacity", String(Math.min(0.35 + activeCandles * 0.09, 0.96)));
-      root.style.setProperty("--cake-brightness", String(0.58 + Math.min(activeCandles * 0.055, 0.48)));
-      root.style.setProperty("--cake-glow-spread", 10 + activeCandles * 8 + "px");
+      root.style.setProperty(
+        "--glow-center-opacity",
+        String(Math.min(0.35 + effectiveCandles * 0.09, 0.96))
+      );
+      root.style.setProperty(
+        "--cake-brightness",
+        String(0.62 + Math.min(effectiveCandles * 0.055, 0.48))
+      );
+      root.style.setProperty("--cake-glow-spread", 10 + effectiveCandles * 8 + "px");
     }
   }
 
@@ -57,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (anyLit && !celebrationTriggered) {
           document.getElementById("hint-blow").classList.remove("hint--hidden");
         }
-      }, 1500);
+      }, 1400);
     }
   }
 
@@ -108,15 +126,40 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function runCelebration() {
+    // Cozy / warm palette (keeps background + envelope untouched; only particles change)
     var darkPalette = [
-      "#FFD700",
-      "#FFA500",
-      "#C0C0C0",
-      "#E8E8E8",
-      "#FFEC8B",
-      "#DAA520",
+      "#F3C86A", // honey
+      "#FFB48F", // peach
+      "#F2A7B8", // blush
+      "#A8D5BA", // sage
+      "#C9B7FF", // lavender
+      "#FFF7EF", // warm milk
     ];
-    var vBlastColors = ["#FFC0CB", "#FF69B4", "#FF1493", "#C71585"];
+    var vBlastColors = ["#F2A7B8", "#FFB48F", "#F3C86A", "#C9B7FF"];
+
+    function isIphone13SizedOrSmaller() {
+      // iPhone 13 CSS viewport (portrait) is 390x844. We use short/long side
+      // so it also matches landscape orientation.
+      const w = window.innerWidth || 0;
+      const h = window.innerHeight || 0;
+      const shortSide = Math.min(w, h);
+      const longSide = Math.max(w, h);
+      return shortSide <= 390 && longSide <= 844;
+    }
+
+    const vBlastTuning = isIphone13SizedOrSmaller()
+      ? {
+          particleCount: 110,
+          spread: 72,
+          startVelocity: 52,
+          scalar: 1.15,
+        }
+      : {
+          particleCount: 180,
+          spread: 95,
+          startVelocity: 60,
+          scalar: 1.35,
+        };
 
     // --- 1. Initial V-Blast: two simultaneous bursts (hearts) from bottom-left and bottom-right ---
     if (typeof confetti === "function") {
@@ -136,12 +179,9 @@ document.addEventListener("DOMContentLoaded", function () {
           : "circle";
 
       var vBlastBase = {
-        particleCount: 180,
-        spread: 95,
-        startVelocity: 60,
+        ...vBlastTuning,
         ticks: 260,
         decay: 0.92,
-        scalar: 1.35,
         shapes: [heartShape],
         colors: vBlastColors,
       };
@@ -186,6 +226,12 @@ document.addEventListener("DOMContentLoaded", function () {
     var animationEnd = Date.now() + duration;
     var skew = 1;
 
+    const w = window.innerWidth || 0;
+    const h = window.innerHeight || 0;
+    const shortSide = Math.min(w, h);
+    const longSide = Math.max(w, h);
+    const isIphone13SizedOrSmaller = shortSide <= 390 && longSide <= 844;
+
     function randomInRange(min, max) {
       return Math.random() * (max - min) + min;
     }
@@ -196,6 +242,12 @@ document.addEventListener("DOMContentLoaded", function () {
       skew = Math.max(0.8, skew - 0.001);
 
       if (typeof confetti === "function") {
+        // On iPhone-13-sized (and smaller) screens, thin the rain a bit to keep
+        // it smooth while still looking "constant".
+        if (isIphone13SizedOrSmaller && Math.random() < 0.45) {
+          if (timeLeft > 0) requestAnimationFrame(frame);
+          return;
+        }
         confetti({
           particleCount: 1,
           startVelocity: 0,
@@ -204,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
             x: Math.random(),
             y: Math.random() * skew - 0.2,
           },
-          colors: colors.length ? colors : ["#FFFFFF", "#FFD700", "#C0C0C0"],
+          colors: colors.length ? colors : ["#FFF7EF", "#F3C86A", "#F2A7B8"],
           shapes: ["circle"],
           gravity: randomInRange(0.4, 0.6),
           scalar: randomInRange(0.4, 1),
@@ -220,13 +272,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // tsParticles snowfall layer (gold/silver)
     if (typeof tsParticles !== "undefined" && tsParticles.load) {
+      const w = window.innerWidth || 0;
+      const h = window.innerHeight || 0;
+      const shortSide = Math.min(w, h);
+      const longSide = Math.max(w, h);
+      const isIphone13SizedOrSmaller = shortSide <= 390 && longSide <= 844;
       tsParticles.load({
         id: "tsparticles",
         options: {
           fullScreen: { enable: true, zIndex: 0 },
           particles: {
           color: {
-            value: ["#FFFFFF", "#FFD700", "#FFA500", "#C0C0C0", "#E8E8E8"],
+            value: ["#FFF7EF", "#F3C86A", "#FFB48F", "#F2A7B8", "#A8D5BA", "#C9B7FF"],
           },
           move: {
             direction: "bottom",
@@ -236,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
             speed: { min: 1, max: 3 },
           },
           number: {
-            value: 500,
+            value: isIphone13SizedOrSmaller ? 340 : 500,
             density: { enable: true, area: 800 },
           },
           opacity: {
