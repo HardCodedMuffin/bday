@@ -150,10 +150,10 @@ body {
   }
 
   .card.expanded:before {
-    width: calc(100% - 28px);
-    height: calc(100% - 28px);
-    left: 14px;
-    top: 14px;
+    width: calc(100% - 24px);
+    height: calc(100% - 24px);
+    left: 12px;
+    top: 12px;
   }
 
   .card.expanded .text {
@@ -201,7 +201,7 @@ body {
     display: flex;
     flex-direction: column;
     text-align: left; /* Default alignment for the letter */
-    padding: 10px 16px;
+    padding: 8px 14px;
     box-sizing: border-box;
   }
 
@@ -270,7 +270,7 @@ body {
     font-size: clamp(6px, 5vw, 8px);
     line-height: 1.5;
     /* Add more padding for the larger view */
-    inset: 28px 20px;
+    inset: 22px 18px;
   }
   
   .hearts {
