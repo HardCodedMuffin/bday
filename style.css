@@ -86,6 +86,7 @@ body::before {
   font-family: 'Dancing Script', cursive; /* Using your fancy font */
   font-size: 24px; /* Bigger and more readable */
   text-shadow: 0 2px 15px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
   
   /* Transition Logic */
   opacity: 1;
