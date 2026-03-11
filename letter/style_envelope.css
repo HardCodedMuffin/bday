@@ -137,9 +137,9 @@ body {
     top: 50% !important;
     transform: translate(-50%, -50%) scale(1);
     width: min(600px, calc(100vw - 24px));
-    height: min(700px, calc(var(--vh, 1vh) * 100 - 24px));
+    height: min(650px, calc(var(--vh, 1vh) * 100 - 24px));
     max-width: 600px;
-    max-height: 700px;
+    max-height: 650px;
     box-shadow: 
     0 0 80px rgba(255, 255, 255, 0.15), 
     0 20px 60px rgba(0, 0, 0, 0.6);
