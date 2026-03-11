@@ -201,7 +201,7 @@ body {
     display: flex;
     flex-direction: column;
     text-align: left; /* Default alignment for the letter */
-    padding: 6px 1px;
+    padding: 6px 6px;
     box-sizing: border-box;
   }
 
@@ -215,11 +215,11 @@ body {
   .letter-content {
     text-align: justify; /* Justified context */
     line-height: 1.6;
-    margin-bottom: 4px;
+    margin-top: 8px;
     font-size: 0.8rem;
     /* Adds that "handwritten" margin feel */
     padding: 0 5px; 
-    margin-bottom: 4px; /* space between lines */
+    margin-bottom: 8px; /* space between lines */
   }
 
   .letter-footer {

@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (anyLit && !celebrationTriggered) {
           document.getElementById("hint-blow").classList.remove("hint--hidden");
         }
-      }, 1500);
+      }, 1400);
     }
   }
 

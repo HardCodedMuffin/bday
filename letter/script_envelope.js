@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (hintPull)
                 setTimeout(() => {
                     hintPull.classList.remove("hint--hidden");
-                }, 2000);
+                }, 1700);
         }
     });
 
