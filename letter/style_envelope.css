@@ -8,10 +8,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100dvh;
     min-height: calc(var(--vh, 1vh) * 100);
-    height: calc(var(--vh, 1vh) * 100);
+    height: auto;
     box-sizing: border-box;
     background-color: #fae1dd;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   body::before {
@@ -263,6 +266,7 @@ body {
   /* Reset clipping when the card is expanded */
   .card.expanded .text {
     -webkit-line-clamp: 15; /* Set to a high number instead of 'initial' */
+    line-clamp: 15;
     font-size: clamp(6px, 5vw, 8px);
     line-height: 1.5;
     /* Add more padding for the larger view */
