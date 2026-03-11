@@ -14,8 +14,18 @@ body {
   background-color: #1a2234; /* slightly lighter charcoal / soft navy */
   margin: 0;
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   overscroll-behavior: none;
+}
+
+/* Hide scrollbars (we clamp scroll in JS) */
+body {
+  scrollbar-width: none; /* Firefox */
+}
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 /* tsParticles layer: behind content, non-interactive */

@@ -5,9 +5,19 @@ document.addEventListener("DOMContentLoaded", function () {
     document.documentElement.style.setProperty("--vh", `${vh}px`);
   }
 
+  function clampScroll() {
+    // Allow a tiny scroll so mobile browsers can hide the address bar,
+    // but prevent actual page scrolling.
+    const y = window.scrollY || window.pageYOffset || 0;
+    if (y > 1) window.scrollTo(0, 1);
+    if (y < 0) window.scrollTo(0, 0);
+  }
+
   setAppVh();
   window.addEventListener("resize", setAppVh);
   window.addEventListener("orientationchange", setAppVh);
+  window.addEventListener("scroll", clampScroll, { passive: true });
+  clampScroll();
 
   const cake = document.querySelector(".cake");
   let candles = [];
