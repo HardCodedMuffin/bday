@@ -201,7 +201,8 @@ body {
     display: flex;
     flex-direction: column;
     text-align: left; /* Default alignment for the letter */
-    padding: 15px 20px;
+    /* Slightly tighter padding so more text fits without scrolling */
+    padding: 10px 20px;
     box-sizing: border-box;
   }
 
@@ -214,7 +215,8 @@ body {
 
   .letter-content {
     text-align: justify; /* Justified context */
-    line-height: 1.6;
+    /* Slightly more open lines for a cleaner "paper" feel */
+    line-height: 1.75;
     margin-bottom: 30px;
     font-size: 0.8rem;
     /* Adds that "handwritten" margin feel */
@@ -270,7 +272,7 @@ body {
     font-size: clamp(6px, 5vw, 8px);
     line-height: 1.5;
     /* Add more padding for the larger view */
-    inset: 50px 25px;
+    inset: 38px 25px;
   }
   
   .hearts {
