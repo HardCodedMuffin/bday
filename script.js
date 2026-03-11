@@ -15,14 +15,16 @@ document.addEventListener("DOMContentLoaded", function () {
   let analyser;
   let microphone;
   let celebrationTriggered = false;
+  const MAX_LIGHT_CANDLES = 4; // cap lighting so scene doesn't keep brightening
 
   function updateCandleCount() {
     const activeCandles = candles.filter(
       (candle) => !candle.classList.contains("out")
     ).length;
+    const effectiveCandles = Math.min(activeCandles, MAX_LIGHT_CANDLES);
 
     // Dynamic lighting: radius = 200px + (candleCount * 50px), scaled by viewport so edge stays soft on large screens
-    const baseRadius = 200 + activeCandles * 50;
+    const baseRadius = 200 + effectiveCandles * 50;
     const viewportScale = Math.min(window.innerWidth, window.innerHeight) * 0.4;
     const glowRadiusPx = baseRadius + viewportScale;
     const root = document.documentElement;
@@ -31,16 +33,22 @@ document.addEventListener("DOMContentLoaded", function () {
       root.style.setProperty("--glow-radius", "0px");
       root.style.setProperty("--glow-opacity", "0");
       root.style.setProperty("--glow-center-opacity", "0");
-      root.style.setProperty("--cake-brightness", "0.55");
+      root.style.setProperty("--cake-brightness", "0.60");
       root.style.setProperty("--cake-glow-spread", "0px");
     } else {
       root.style.setProperty("--glow-radius", glowRadiusPx + "px");
       // Warm glow intensity scales with candles (cap for many candles), slightly brighter overall
-      const intensity = Math.min(0.58 + activeCandles * 0.07, 0.96);
+      const intensity = Math.min(0.58 + effectiveCandles * 0.07, 0.96);
       root.style.setProperty("--glow-opacity", String(intensity));
-      root.style.setProperty("--glow-center-opacity", String(Math.min(0.35 + activeCandles * 0.09, 0.96)));
-      root.style.setProperty("--cake-brightness", String(0.58 + Math.min(activeCandles * 0.055, 0.48)));
-      root.style.setProperty("--cake-glow-spread", 10 + activeCandles * 8 + "px");
+      root.style.setProperty(
+        "--glow-center-opacity",
+        String(Math.min(0.35 + effectiveCandles * 0.09, 0.96))
+      );
+      root.style.setProperty(
+        "--cake-brightness",
+        String(0.62 + Math.min(effectiveCandles * 0.055, 0.48))
+      );
+      root.style.setProperty("--cake-glow-spread", 10 + effectiveCandles * 8 + "px");
     }
   }
 

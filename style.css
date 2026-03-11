@@ -12,7 +12,7 @@ html,
 body {
   min-height: 100dvh;
   min-height: calc(var(--vh, 1vh) * 100);
-  background-color: #1a2234; /* slightly lighter charcoal / soft navy */
+  background-color: #fae1dd;
   margin: 0;
   height: 100%;
   overflow-x: hidden;
@@ -96,7 +96,7 @@ body::before {
   align-items: center;
 
   /* Typography */
-  color: #faedcd; /* Champagne Gold */
+  color: #000000; /* Champagne Gold */
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 2px 5px rgba(0,0,0,0.8);
   font-family: 'Dancing Script', cursive; /* Using your fancy font */
   font-size: 24px; /* Bigger and more readable */
