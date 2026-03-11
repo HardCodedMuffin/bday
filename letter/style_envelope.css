@@ -4,12 +4,12 @@ html, body {
     overflow-x: hidden;
   }
 
-  body {
+body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
+    height: calc(var(--vh, 1vh) * 100);
     box-sizing: border-box;
     background-color: #fae1dd;
   }

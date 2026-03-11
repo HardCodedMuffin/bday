@@ -5,11 +5,12 @@
   --glow-center-opacity: 0;
   --cake-brightness: 0.55;
   --cake-glow-spread: 0px;
+  --vh: 1vh;
 }
 
 html,
 body {
-  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
   background-color: #1a2234; /* slightly lighter charcoal / soft navy */
   margin: 0;
   height: 100%;

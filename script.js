@@ -1,4 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
+  function setAppVh() {
+    // Mobile "fullscreen"/address-bar changes make 100vh unstable; lock to innerHeight.
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }
+
+  setAppVh();
+  window.addEventListener("resize", setAppVh);
+  window.addEventListener("orientationchange", setAppVh);
+
   const cake = document.querySelector(".cake");
   let candles = [];
   let audioContext;
