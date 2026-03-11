@@ -137,9 +137,9 @@ body {
     top: 50% !important;
     transform: translate(-50%, -50%) scale(1);
     width: min(600px, calc(100vw - 24px));
-    height: min(650px, calc(var(--vh, 1vh) * 100 - 24px));
+    height: min(700px, calc(var(--vh, 1vh) * 100 - 24px));
     max-width: 600px;
-    max-height: 650px;
+    max-height: 700px;
     box-shadow: 
     0 0 80px rgba(255, 255, 255, 0.15), 
     0 20px 60px rgba(0, 0, 0, 0.6);
@@ -150,10 +150,10 @@ body {
   }
 
   .card.expanded:before {
-    width: calc(100% - 24px);
-    height: calc(100% - 24px);
-    left: 12px;
-    top: 12px;
+    width: calc(100% - 22px);
+    height: calc(100% - 22px);
+    left: 10px;
+    top: 10px;
   }
 
   .card.expanded .text {
@@ -201,7 +201,7 @@ body {
     display: flex;
     flex-direction: column;
     text-align: left; /* Default alignment for the letter */
-    padding: 8px 14px;
+    padding: 6px 1px;
     box-sizing: border-box;
   }
 
@@ -215,13 +215,13 @@ body {
   .letter-content {
     text-align: justify; /* Justified context */
     line-height: 1.6;
-    margin-bottom: 10px;
+    /*margin-bottom: 10px; */
     font-size: 0.8rem;
     /* Adds that "handwritten" margin feel */
     padding: 0 5px; 
-    margin-bottom: 4px;
+    /*margin-bottom: 4px; */
     /* Helps Turkish words break nicely if they are too long */
-    hyphens: auto;
+    /*hyphens: auto; */
   }
 
   .letter-footer {
@@ -270,7 +270,7 @@ body {
     font-size: clamp(6px, 5vw, 8px);
     line-height: 1.5;
     /* Add more padding for the larger view */
-    inset: 22px 18px;
+    inset: 20px 16px;
   }
   
   .hearts {
