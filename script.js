@@ -136,6 +136,30 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
     var vBlastColors = ["#FFC0CB", "#FF69B4", "#FF1493", "#C71585"];
 
+    function isIphone13SizedOrSmaller() {
+      // iPhone 13 CSS viewport (portrait) is 390x844. We use short/long side
+      // so it also matches landscape orientation.
+      const w = window.innerWidth || 0;
+      const h = window.innerHeight || 0;
+      const shortSide = Math.min(w, h);
+      const longSide = Math.max(w, h);
+      return shortSide <= 390 && longSide <= 844;
+    }
+
+    const vBlastTuning = isIphone13SizedOrSmaller()
+      ? {
+          particleCount: 110,
+          spread: 72,
+          startVelocity: 52,
+          scalar: 1.15,
+        }
+      : {
+          particleCount: 180,
+          spread: 95,
+          startVelocity: 60,
+          scalar: 1.35,
+        };
+
     // --- 1. Initial V-Blast: two simultaneous bursts (hearts) from bottom-left and bottom-right ---
     if (typeof confetti === "function") {
       var heartShape =
@@ -154,12 +178,9 @@ document.addEventListener("DOMContentLoaded", function () {
           : "circle";
 
       var vBlastBase = {
-        particleCount: 180,
-        spread: 95,
-        startVelocity: 60,
+        ...vBlastTuning,
         ticks: 260,
         decay: 0.92,
-        scalar: 1.35,
         shapes: [heartShape],
         colors: vBlastColors,
       };
@@ -204,6 +225,12 @@ document.addEventListener("DOMContentLoaded", function () {
     var animationEnd = Date.now() + duration;
     var skew = 1;
 
+    const w = window.innerWidth || 0;
+    const h = window.innerHeight || 0;
+    const shortSide = Math.min(w, h);
+    const longSide = Math.max(w, h);
+    const isIphone13SizedOrSmaller = shortSide <= 390 && longSide <= 844;
+
     function randomInRange(min, max) {
       return Math.random() * (max - min) + min;
     }
@@ -214,6 +241,12 @@ document.addEventListener("DOMContentLoaded", function () {
       skew = Math.max(0.8, skew - 0.001);
 
       if (typeof confetti === "function") {
+        // On iPhone-13-sized (and smaller) screens, thin the rain a bit to keep
+        // it smooth while still looking "constant".
+        if (isIphone13SizedOrSmaller && Math.random() < 0.45) {
+          if (timeLeft > 0) requestAnimationFrame(frame);
+          return;
+        }
         confetti({
           particleCount: 1,
           startVelocity: 0,
@@ -238,6 +271,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // tsParticles snowfall layer (gold/silver)
     if (typeof tsParticles !== "undefined" && tsParticles.load) {
+      const w = window.innerWidth || 0;
+      const h = window.innerHeight || 0;
+      const shortSide = Math.min(w, h);
+      const longSide = Math.max(w, h);
+      const isIphone13SizedOrSmaller = shortSide <= 390 && longSide <= 844;
       tsParticles.load({
         id: "tsparticles",
         options: {
@@ -254,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function () {
             speed: { min: 1, max: 3 },
           },
           number: {
-            value: 500,
+            value: isIphone13SizedOrSmaller ? 340 : 500,
             density: { enable: true, area: 800 },
           },
           opacity: {
