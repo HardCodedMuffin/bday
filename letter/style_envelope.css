@@ -137,9 +137,9 @@ body {
     top: 50% !important;
     transform: translate(-50%, -50%) scale(1);
     width: min(600px, calc(100vw - 24px));
-    height: min(700px, calc(var(--vh, 1vh) * 100 - 24px));
+    height: min(600px, calc(var(--vh, 1vh) * 100 - 24px));
     max-width: 600px;
-    max-height: 700px;
+    max-height: 600px;
     box-shadow: 
     0 0 80px rgba(255, 255, 255, 0.15), 
     0 20px 60px rgba(0, 0, 0, 0.6);
@@ -215,13 +215,11 @@ body {
   .letter-content {
     text-align: justify; /* Justified context */
     line-height: 1.6;
-    /*margin-bottom: 10px; */
+    margin-bottom: 4px;
     font-size: 0.8rem;
     /* Adds that "handwritten" margin feel */
     padding: 0 5px; 
-    /*margin-bottom: 4px; */
-    /* Helps Turkish words break nicely if they are too long */
-    /*hyphens: auto; */
+    margin-bottom: 4px; /* space between lines */
   }
 
   .letter-footer {
