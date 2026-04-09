@@ -265,10 +265,23 @@ body {
   .card.expanded .text {
     -webkit-line-clamp: 15; /* Set to a high number instead of 'initial' */
     line-clamp: 15;
-    font-size: clamp(6px, 5vw, 8px);
-    line-height: 1.5;
+    font-size: clamp(11px, 2.9vw, 13px);
+    line-height: 1.42;
     /* Add more padding for the larger view */
-    inset: 20px 16px;
+    inset: 16px 13px;
+  }
+
+  .card.expanded .letter-address,
+  .card.expanded .letter-footer {
+    font-size: clamp(12px, 3vw, 14px);
+  }
+
+  .card.expanded .letter-content {
+    font-size: clamp(11px, 2.9vw, 13px);
+    line-height: 1.45;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding: 0 3px;
   }
   
   .hearts {
@@ -456,5 +469,22 @@ body {
     .container {
       margin-left: auto;
       margin-right: auto;
+    }
+
+    /* Keep the long letter compact on small phones */
+    .card.expanded .text {
+      inset: 14px 12px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+    }
+
+    .card.expanded .letter-content {
+      font-size: 0.72rem;
+      line-height: 1.42;
+    }
+
+    .card.expanded .letter-address,
+    .card.expanded .letter-footer {
+      font-size: 0.76rem;
     }
   }
