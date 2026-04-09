@@ -33,20 +33,20 @@ document.addEventListener("DOMContentLoaded", function () {
       root.style.setProperty("--glow-radius", "0px");
       root.style.setProperty("--glow-opacity", "0");
       root.style.setProperty("--glow-center-opacity", "0");
-      root.style.setProperty("--cake-brightness", "0.60");
+      root.style.setProperty("--cake-brightness", "0.70");
       root.style.setProperty("--cake-glow-spread", "0px");
     } else {
       root.style.setProperty("--glow-radius", glowRadiusPx + "px");
       // Warm glow intensity scales with candles (cap for many candles), slightly brighter overall
-      const intensity = Math.min(0.58 + effectiveCandles * 0.07, 0.96);
+      const intensity = Math.min(0.62 + effectiveCandles * 0.07, 0.96);
       root.style.setProperty("--glow-opacity", String(intensity));
       root.style.setProperty(
         "--glow-center-opacity",
-        String(Math.min(0.35 + effectiveCandles * 0.09, 0.96))
+        String(Math.min(0.4 + effectiveCandles * 0.09, 0.96))
       );
       root.style.setProperty(
         "--cake-brightness",
-        String(0.62 + Math.min(effectiveCandles * 0.055, 0.48))
+        String(0.68 + Math.min(effectiveCandles * 0.055, 0.48))
       );
       root.style.setProperty("--cake-glow-spread", 10 + effectiveCandles * 8 + "px");
     }
