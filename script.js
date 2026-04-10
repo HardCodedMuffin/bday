@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let microphone;
   let celebrationTriggered = false;
   const MAX_LIGHT_CANDLES = 4; // cap lighting so scene doesn't keep brightening
+  const isMobileDevice =
+    /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    window.matchMedia("(pointer: coarse)").matches;
 
   function updateCandleCount() {
     const activeCandles = candles.filter(
@@ -97,7 +100,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     let average = sum / bufferLength;
 
-    return average > 40; //
+    // Phone mics often report lower levels, so use a softer threshold on mobile.
+    const threshold = isMobileDevice ? 30 : 38;
+    return average > threshold;
   }
 
   function blowOutCandles() {
